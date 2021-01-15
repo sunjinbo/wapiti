@@ -7,9 +7,9 @@ using namespace std;
 int main()
 {
     int number;
-    cout << "输入一个整数: ";
+    cout << "Please input an integer:";
     cin >> number;
-    cout << "输入的数字为: " << number << endl;
+    cout << "The number is " << number << endl;
 
     return 0;
 }
