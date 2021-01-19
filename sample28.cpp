@@ -20,7 +20,7 @@ class Stack {
     bool empty() const{       // 如果为空则返回真。
         return elems.empty(); 
     } 
-}; 
+};
  
 template <class T>
 void Stack<T>::push (T const& elem) 
