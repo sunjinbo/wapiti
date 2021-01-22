@@ -1,4 +1,4 @@
-// 互斥锁
+// 原子锁
 
 #include <iostream>
 #include <thread>
@@ -6,18 +6,14 @@
 #include <mutex>
 #include <chrono>
 #include <stdexcept>
+#include <atomic>
 
-std::mutex mtx; // 保护counter
+std::atomic_int counter(0);
 
-int counter = 0;
 void increase() {
     int time = 1000;
     for (int i = 0; i < time; i++) {
-        mtx.lock();
-        // 当前线程休眠1毫秒
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
         counter++;
-        mtx.unlock();
     }
 }
 

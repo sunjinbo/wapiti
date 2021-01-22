@@ -1,4 +1,4 @@
-// 避免死锁
+// 互斥锁 - 避免死锁
 
 #include <iostream>
 #include <thread>
