@@ -1,5 +1,4 @@
-
-// 有向图的最短路径
+// 广度优先搜索
 
 #include <iostream>
 #include <vector>
