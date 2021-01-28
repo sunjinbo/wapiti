@@ -8,19 +8,22 @@ using namespace std;
 
 // 定义一个有向图的邻接矩阵
 const int MAX = (1<<31)-1;
-const int N = 4;
-const int GRAPH[N][N] = {{0, 6, 2, MAX}, 
-                   {MAX, 0, MAX, 1}, 
-                   {MAX, 3, 0, 5},
-                   {MAX, MAX, MAX, 0,}
-                  };
+const int N = 5;
+const int NA = -1;
+const int GRAPH[N][N] = {
+    {0, 4, MAX, 2, MAX}, 
+    {4, 0, 4, 1, MAX}, 
+    {MAX, 4, 0, 1, 3},
+    {2, 1, 1, 0, 7},
+    {MAX, MAX, 3, 7, 0}
+};
 
-// 在vector容器中寻找元素是否存在
-bool contains(vector<int>& vec, int element)
+// 判断数据中是否还有未处理的节点
+bool isNotEmpty(int n, int arr[])
 {
-    for (vector<int>::const_iterator iter = vec.cbegin(); iter != vec.cend(); iter++) 
+    for (int i = 0; i < n; ++i)
     {
-        if (*iter == element)
+        if (arr[i] != NA)
         {
             return true;
         }
@@ -29,12 +32,60 @@ bool contains(vector<int>& vec, int element)
     return false;
 }
 
-// 从vector容器中删除指定的元素
-
-
 // 狄克斯特拉搜索算法
 int dijkstra() {
-    return 0;
+    int S[N];
+    int U[N];
+
+    // 初始化S和U
+    for (int i = 0; i < N; ++i)
+    {
+        S[i] = ((i == 0) ? 0 : NA);
+        U[i] = ((i == 0) ? NA : GRAPH[0][i]);
+    }
+
+    // 核心算法
+    while (isNotEmpty(N, U))
+    {
+        // 找到最临近的节点shortest
+        int shortest = MAX;
+        int shortestIndex = -1;
+        for (int i = 0; i < N; ++i)
+        {
+            if (U[i] != NA)
+            {
+                if (U[i] < shortest)
+                {
+                    shortest = U[i];
+                    shortestIndex = i;
+                }
+            }
+        }
+
+        // 将该shortest节点放置到S集合中
+        if (shortestIndex >= 0 && shortestIndex < N)
+        {
+            S[shortestIndex] = U[shortestIndex];
+            U[shortestIndex] = NA;
+        }
+        
+        // 根据shortest节点，重新刷新集合U
+        for (int i = 0; i < N; ++i)
+        {
+            if (U[i] != NA) // 找到U集合里残余的节点
+            {
+                if (GRAPH[shortestIndex][i] != MAX) // 如果shortest节点与该节点有通路
+                {
+                    if (GRAPH[shortestIndex][i] + S[shortestIndex] < U[i])
+                    {
+                        U[i] = GRAPH[shortestIndex][i] + S[shortestIndex];
+                    }
+                }
+            }
+        }
+    }
+
+    return S[N-1];
 }
 
 int main(int argc, char** argv)
